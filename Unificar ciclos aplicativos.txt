@@ -1,0 +1,44 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jul  2 19:17:33 2024
+
+@author: devilla
+"""
+
+import pandas as pd
+
+# Cargar el archivo de Excel en un DataFrame
+
+df = pd.read_excel('Solicitud de información equipos SOX - Aplicativos - Opciones Críticas - Reglas SoD 02072024.xlsx', sheet_name='Aplicativos')
+
+# Definir una función de agregación personalizada
+def custom_aggregate(series):
+    if series.nunique() == 1:
+        return series.iloc[0]
+    else:
+        return ', '.join(series.astype(str).unique())
+
+# Agrupar por 'idaplicativo' y agregar la columna 'Ciclo'
+aggregated_df = df.groupby('idaplicativo').agg({
+    'Compañía': 'first',
+    'Ciclo': custom_aggregate,
+    'compania_ciclo': 'first',
+    'Código aplicativo fuente autoritativa de cada país': 'first',
+    'Nombre Aplicativo fuente autoritativa': 'first',
+    'Nombre Aplicativo genérico': 'first',
+    'Alcance SOX a partir del periodo': 'first',
+    '¿Quién es el administrador o ruta a través de que se solicitan accesos?': 'first',
+    '¿Aplicativo en alcance de certificación de accesos?': 'first',
+    'Si aplica, Justificación del por que el aplicativo no se encuentra en el alcance de certificación': 'first',
+    'Observaciones': 'first',
+    '¿Se ha identificado alguna restricción Técnica?': 'first',
+    'Si aplica, Justificación de la restricción técnica': 'first',
+    'Inactivación': 'first',
+    'Inactivación SOX a partir del periodo': 'first',
+    'Justificación inactivación SOX': 'first'
+})
+
+# Guardar el DataFrame agregado en un nuevo archivo de Excel
+aggregated_df.to_excel('datos_agregados.xlsx', index=False)
+
+print("Los datos se han agregado y guardado exitosamente en 'datos_agregados.xlsx'.")
