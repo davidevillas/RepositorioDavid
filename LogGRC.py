@@ -13,5 +13,5 @@ driver.get('https://servicios-de-valoracion.apps.bancolombia.com/Evaluaciones')
 boton = driver.find_element_by_class_name('botonPositivo btn btn-primary')##driver.find_element(By.ID, 'id_del_boton')
 boton.click()
 
-# Cierra el navegadorr
+# Cierra el navegadorrrr
 driver.quit()
